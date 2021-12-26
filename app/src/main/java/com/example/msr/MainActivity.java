@@ -28,23 +28,17 @@ import java.util.List;
 
 public class MainActivity extends CameraActivity implements CvCameraViewListener2 {
     private static final String TAG = "Finger Camera Tracking";
-    private static final int MORPH_RECT = 0;
-    private static final int MORPH_CROSS = 1;
-    private static final int MORPH_ELLIPSE = 2;
 
     /** References to the UI widgets used in this demo app. */
     private TextView mLeftRightDirectionTextView;
 
     private DiffGradientCalculator mDetector;
-
     private CameraBridgeViewBase mOpenCvCameraView;
 
     Mat mRgba;
     Mat mRgbaF;
     Mat mRgbaT;
-    Mat tempImg;
     Mat imgHSV;
-    Mat imgThresholded;
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -62,8 +56,7 @@ public class MainActivity extends CameraActivity implements CvCameraViewListener
             }
         }
     };
-
-
+    
     public MainActivity() {
         Log.i(TAG, "Instantiated new " + this.getClass());
     }
@@ -71,7 +64,6 @@ public class MainActivity extends CameraActivity implements CvCameraViewListener
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        //Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -109,12 +101,10 @@ public class MainActivity extends CameraActivity implements CvCameraViewListener
     public void onResume()
     {
         super.onResume();
-        // CHeck if open cv is initialized.
+        // Check if open cv is initialized.
         if (!OpenCVLoader.initDebug()) {
-            //Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
             OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
         } else {
-            //Log.d(TAG, "OpenCV library found inside package. Using it!");
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
     }
@@ -138,84 +128,48 @@ public class MainActivity extends CameraActivity implements CvCameraViewListener
         mRgbaF = new Mat(height, width, CvType.CV_8UC4);
         mRgbaT = new Mat(width, width, CvType.CV_8UC4);
         imgHSV = new Mat(width, width, CvType.CV_8UC4);
-        imgThresholded = new Mat(width, width, CvType.CV_8UC4);
         mDetector = new DiffGradientCalculator();
-
-        tempImg = new Mat(0, 0, 0);
-
-
     }
 
     public void onCameraViewStopped() {
         mRgba.release();
+        mRgbaF.release();
+        mRgbaT.release();
+        imgHSV.release();
     }
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-        //Log.d(TAG, "onCameraFrame ");
         mRgba = inputFrame.rgba();
-        // Rotate mRgba 90 degrees
+        // Rotate mRgba 90 degrees clockwise.
         Core.transpose(mRgba, mRgbaT);
         Imgproc.resize(mRgbaT, mRgbaF, mRgbaF.size(), 0,0, 0);
         Core.flip(mRgbaF, mRgba, 1 );
 
-
-        tempImg.setTo(new Scalar(0,0,0,255));
+        // RGBA to HSV
         Imgproc.cvtColor(mRgba, imgHSV, Imgproc.COLOR_RGB2HSV);
 
+        // RED Mask 1
         Mat mask1 = new Mat();
-        Mat mask2 = new Mat();
-
-        /*Mat mDilatedMask1 = new Mat();
-        Mat mErodedMask1 = new Mat();
-
-        Mat mDilatedMask2 = new Mat();
-        Mat mErodedMask2 = new Mat();
-
-        Size kernelDilate = new Size(8, 8);
-        Size kernelErode = new Size(3, 3);*/
-
         Core.inRange(imgHSV, new Scalar(0, 70, 50), new Scalar(10, 255, 255), mask1);
-        //Imgproc.erode(mask1, mErodedMask1, getStructuringElement(MORPH_RECT, kernelErode));
-        //Imgproc.dilate(mErodedMask1, mDilatedMask1, getStructuringElement(MORPH_RECT, kernelDilate));
 
+        // RED Mask 2
+        Mat mask2 = new Mat();
         Core.inRange(imgHSV, new Scalar(170, 70, 50), new Scalar(180, 255, 255), mask2);
-        //Imgproc.erode(mask2, mErodedMask2, getStructuringElement(MORPH_RECT, kernelErode));
-        //Imgproc.dilate(mErodedMask2, mDilatedMask2, getStructuringElement(MORPH_RECT, kernelDilate));
 
+        // Combine red mask 1 and 2
         Mat mask_combined = new Mat();
-        //Core.bitwise_or(mDilatedMask1, mDilatedMask2, mask_combined);
         Core.bitwise_or(mask1, mask2, mask_combined);
 
         // Calculate direction of gradient with mask_combined itself.
         mDetector.calculateDirectionGradient(mask_combined);
         Double sumDiffGrad = mDetector.getDirectionGradient();
+
+        // This is required because displayTrackingDirection updates the UI.
         runOnUiThread(new Runnable() {
             public void run() {
                 displayTrackingDirection(sumDiffGrad);
             }
         });
-
-        //return mask_combined;
-
         return mRgba; // Return the original camera preview feed.
-
-        /*
-        Mat image_masked = new Mat();
-        Core.bitwise_and(inputFrame.rgba(), inputFrame.rgba(), image_masked, mask_combined);
-
-        mDetector.calculateDirectionGradient(image_masked);
-        Double sumDiffGrad = mDetector.getDirectionGradient();
-        runOnUiThread(new Runnable() {
-            public void run() {
-                displayTrackingDirection(sumDiffGrad);
-            }
-        });
-
-        // We want to send the original frame to camera. For some reason it needs to be rotated again.
-        Core.transpose(mRgba, mRgbaT);
-        Imgproc.resize(mRgbaT, mRgbaF, mRgbaF.size(), 0,0, 0);
-        Core.flip(mRgbaF, mRgba, 1 );
-        return mRgba;*/
     }
-
 }
