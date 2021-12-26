@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">msr</string>
+    <string name="left_right_direction">Tracking</string>
+</resources>

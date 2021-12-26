@@ -1,0 +1,33 @@
+{
+  "buildFiles": [
+    "/Users/a42/AndroidStudioProjects/msr/opencv/libcxx_helper/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/a42/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+      "-C",
+      "/Users/a42/AndroidStudioProjects/msr/opencv/.cxx/RelWithDebInfo/3g5p4z51/armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/a42/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+    "-C",
+    "/Users/a42/AndroidStudioProjects/msr/opencv/.cxx/RelWithDebInfo/3g5p4z51/armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "opencv_jni_shared-RelWithDebInfo-armeabi-v7a": {
+      "artifactName": "opencv_jni_shared",
+      "buildCommandComponents": [
+        "/Users/a42/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/Users/a42/AndroidStudioProjects/msr/opencv/.cxx/RelWithDebInfo/3g5p4z51/armeabi-v7a",
+        "opencv_jni_shared"
+      ],
+      "abi": "armeabi-v7a",
+      "output": "/Users/a42/AndroidStudioProjects/msr/opencv/.cxx/RelWithDebInfo/3g5p4z51/armeabi-v7a/libopencv_jni_shared.a",
+      "runtimeFiles": []
+    }
+  }
+}

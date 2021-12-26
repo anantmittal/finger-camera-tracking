@@ -1,0 +1,7 @@
+Executable : /Users/a42/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja
+arguments : 
+-C
+/Users/a42/AndroidStudioProjects/msr/opencv/.cxx/Debug/6c2v2a62/x86
+opencv_jni_shared
+jvmArgs : 
+

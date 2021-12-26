@@ -1,0 +1,3 @@
+/Users/a42/AndroidStudioProjects/msr/opencv/.cxx/Debug/6c2v2a62/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/Users/a42/AndroidStudioProjects/msr/opencv/.cxx/Debug/6c2v2a62/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/a42/AndroidStudioProjects/msr/opencv/.cxx/Debug/6c2v2a62/armeabi-v7a/CMakeFiles/opencv_jni_shared.dir
