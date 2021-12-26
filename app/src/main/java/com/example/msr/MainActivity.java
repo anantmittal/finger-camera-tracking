@@ -39,7 +39,6 @@ public class MainActivity extends CameraActivity implements CvCameraViewListener
 
     private CameraBridgeViewBase mOpenCvCameraView;
 
-    // These variables are used (at the moment) to fix camera orientation from 270degree to 0degree
     Mat mRgba;
     Mat mRgbaF;
     Mat mRgbaT;
@@ -166,14 +165,14 @@ public class MainActivity extends CameraActivity implements CvCameraViewListener
         Mat mask1 = new Mat();
         Mat mask2 = new Mat();
 
-        Mat mDilatedMask1 = new Mat();
+        /*Mat mDilatedMask1 = new Mat();
         Mat mErodedMask1 = new Mat();
 
         Mat mDilatedMask2 = new Mat();
         Mat mErodedMask2 = new Mat();
 
         Size kernelDilate = new Size(8, 8);
-        Size kernelErode = new Size(3, 3);
+        Size kernelErode = new Size(3, 3);*/
 
         Core.inRange(imgHSV, new Scalar(0, 70, 50), new Scalar(10, 255, 255), mask1);
         //Imgproc.erode(mask1, mErodedMask1, getStructuringElement(MORPH_RECT, kernelErode));
@@ -204,7 +203,6 @@ public class MainActivity extends CameraActivity implements CvCameraViewListener
         Imgproc.resize(mRgbaT, mRgbaF, mRgbaF.size(), 0,0, 0);
         Core.flip(mRgbaF, mRgba, 1 );
         return mRgba;
-
     }
 
 }

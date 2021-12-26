@@ -19,9 +19,7 @@ import org.opencv.imgproc.Imgproc;
 
 public class DiffGradientCalculator {
 
-    private List<MatOfPoint> mContours = new ArrayList<MatOfPoint>();
     private List<Double> directionGradient = new ArrayList<Double>();
-
 
     public void calculateDirectionGradient(Mat rgbaImage) {
         //Log.d("channels", String.valueOf(rgbaImage.channels()));
@@ -69,10 +67,7 @@ public class DiffGradientCalculator {
 
         List<Double> diffGrad = new ArrayList<Double>();
 
-        // Iterating using for loop
-
         for (int i = 0; i < tail.size()-1; i++){
-
             // Printing and display the elements in ArrayList
             //System.out.print(tail.get(i) + " ");
             diffGrad.add(tail.get(i) - tail.get(i+1));
@@ -84,9 +79,5 @@ public class DiffGradientCalculator {
         }
         //Log.d("SumDIFFGRAD", String.valueOf(sumDiffGrad));
         return sumDiffGrad;
-    }
-
-    public List<MatOfPoint> getContours() {
-        return mContours;
     }
 }
