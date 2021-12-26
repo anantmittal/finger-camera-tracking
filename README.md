@@ -35,3 +35,4 @@ https://stackoverflow.com/questions/35753393/how-to-add-image-as-mask-in-camera-
 
 * A direction label is always displayed once initialized, even when there is no motion
 * Sometimes, the direction label might be inaccurate when capturing extremely slow or extremely fast motion
+* Memory usage and garbage collection could be better
