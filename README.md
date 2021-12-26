@@ -13,7 +13,7 @@ An android app which detects a finger moving left to right or right to left whil
 ```
 
 Most of the above computation happens in the following 3 methods:
-1. [onCameraFrame](https://github.com/anantmittal/finger-camera-tracking/blob/main/app/src/main/java/com/example/msr/MainActivity.java#L153)
+1. [onCameraFrame](https://github.com/anantmittal/finger-camera-tracking/blob/main/app/src/main/java/com/example/msr/MainActivity.java#L141)
 2. [calculateDirectionGradient](https://github.com/anantmittal/finger-camera-tracking/blob/main/app/src/main/java/com/example/msr/DiffGradientCalculator.java#L24)
 3. [getDirectionGradient](https://github.com/anantmittal/finger-camera-tracking/blob/main/app/src/main/java/com/example/msr/DiffGradientCalculator.java#L64)
 
