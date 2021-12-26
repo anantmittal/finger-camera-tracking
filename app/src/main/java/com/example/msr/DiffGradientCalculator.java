@@ -22,8 +22,8 @@ public class DiffGradientCalculator {
     private List<Double> directionGradient = new ArrayList<Double>();
 
     public void calculateDirectionGradient(Mat rgbaImage) {
-        //Log.d("channels", String.valueOf(rgbaImage.channels()));
-        //Log.d("size", String.valueOf(rgbaImage.size()));
+        Log.d("channels", String.valueOf(rgbaImage.channels()));
+        Log.d("size", String.valueOf(rgbaImage.size()));
 
         Rect roiLeft = new Rect(0, 0, rgbaImage.width()/2, rgbaImage.height());
         Rect roiRight = new Rect(rgbaImage.width()/2, 0, rgbaImage.width()/2, rgbaImage.height());
@@ -37,7 +37,7 @@ public class DiffGradientCalculator {
         MatOfDouble meanSrcLeft = new MatOfDouble();
         MatOfDouble stdSrcLeft = new MatOfDouble();
         Core.meanStdDev(croppedLeft, meanSrcLeft, stdSrcLeft);
-        //Log.d("Left meansrc", meanSrcLeft.dump());
+        Log.d("Left meansrc", meanSrcLeft.dump());
         //Log.d("Left meanval4", String.valueOf(meanSrcLeft.get(3,0)[0]));
 
         //Log.d("Left meanval1", String.valueOf(meanSrcLeft.get(0,0)[0]));
@@ -49,10 +49,11 @@ public class DiffGradientCalculator {
         MatOfDouble meanSrcRight= new MatOfDouble();
         MatOfDouble stdSrcRight = new MatOfDouble();
         Core.meanStdDev(croppedRight, meanSrcRight, stdSrcRight);
-        //Log.d("Right meansrc", meanSrcRight.dump());
+        Log.d("Right meansrc", meanSrcRight.dump());
         //Log.d("Right meanval4", String.valueOf(meanSrcRight.get(3,0)[0]));
 
-        directionGradient.add(meanSrcLeft.get(3,0)[0] - meanSrcRight.get(3,0)[0]);
+        // Only 1 channel because rgbaImage is a mask.
+        directionGradient.add(meanSrcLeft.get(0,0)[0] - meanSrcRight.get(0,0)[0]);
 
         //Log.d("Left meanval1", String.valueOf(meanSrcLeft.get(0,0)[0]));
         //Log.d("Left meanval2", String.valueOf(meanSrcLeft.get(1,0)[0]));

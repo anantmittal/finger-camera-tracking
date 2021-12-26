@@ -186,6 +186,20 @@ public class MainActivity extends CameraActivity implements CvCameraViewListener
         //Core.bitwise_or(mDilatedMask1, mDilatedMask2, mask_combined);
         Core.bitwise_or(mask1, mask2, mask_combined);
 
+        // Calculate direction of gradient with mask_combined itself.
+        mDetector.calculateDirectionGradient(mask_combined);
+        Double sumDiffGrad = mDetector.getDirectionGradient();
+        runOnUiThread(new Runnable() {
+            public void run() {
+                displayTrackingDirection(sumDiffGrad);
+            }
+        });
+
+        //return mask_combined;
+
+        return mRgba; // Return the original camera preview feed.
+
+        /*
         Mat image_masked = new Mat();
         Core.bitwise_and(inputFrame.rgba(), inputFrame.rgba(), image_masked, mask_combined);
 
@@ -197,12 +211,11 @@ public class MainActivity extends CameraActivity implements CvCameraViewListener
             }
         });
 
-
         // We want to send the original frame to camera. For some reason it needs to be rotated again.
         Core.transpose(mRgba, mRgbaT);
         Imgproc.resize(mRgbaT, mRgbaF, mRgbaF.size(), 0,0, 0);
         Core.flip(mRgbaF, mRgba, 1 );
-        return mRgba;
+        return mRgba;*/
     }
 
 }
