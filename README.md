@@ -12,6 +12,11 @@ An android app which detects a finger moving left to right or right to left whil
 5. For a sequence of frames, if the sequence of above computed difference decreases from positive to negative, the direction is left-to-right. Else it's right-to-left.
 ```
 
+Most of the above computation happens in the following 3 methods:
+https://github.com/anantmittal/finger-camera-tracking/blob/main/app/src/main/java/com/example/msr/MainActivity.java#L153
+https://github.com/anantmittal/finger-camera-tracking/blob/main/app/src/main/java/com/example/msr/DiffGradientCalculator.java#L24
+https://github.com/anantmittal/finger-camera-tracking/blob/main/app/src/main/java/com/example/msr/DiffGradientCalculator.java#L64
+
 # References
 
 https://stackoverflow.com/questions/35111559/capture-video-frames-with-opencv-in-android
