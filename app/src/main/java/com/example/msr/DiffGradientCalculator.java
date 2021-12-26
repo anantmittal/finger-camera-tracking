@@ -21,64 +21,48 @@ public class DiffGradientCalculator {
 
     private List<Double> directionGradient = new ArrayList<Double>();
 
-    public void calculateDirectionGradient(Mat rgbaImage) {
-        Log.d("channels", String.valueOf(rgbaImage.channels()));
-        Log.d("size", String.valueOf(rgbaImage.size()));
+    public void calculateDirectionGradient(Mat combinedMask) {
 
-        Rect roiLeft = new Rect(0, 0, rgbaImage.width()/2, rgbaImage.height());
-        Rect roiRight = new Rect(rgbaImage.width()/2, 0, rgbaImage.width()/2, rgbaImage.height());
+        // Create rectangle to crop left part of the image.
+        Rect roiLeft = new Rect(0, 0, combinedMask.width()/2, combinedMask.height());
 
-
-        //List<Mat> labSrc = new ArrayList<Mat>(4);
-        //Core.split(rgbaImage, labSrc);
+        // Create rectangle to crop right part of the image.
+        Rect roiRight = new Rect(combinedMask.width()/2, 0, combinedMask.width()/2, combinedMask.height());
 
         // LEFT CROPPED IMAGE
-        Mat croppedLeft = new Mat(rgbaImage, roiLeft);
+        Mat croppedLeft = new Mat(combinedMask, roiLeft);
         MatOfDouble meanSrcLeft = new MatOfDouble();
         MatOfDouble stdSrcLeft = new MatOfDouble();
+        // Calculate mean and standard deviation of the values in cropped left image and store them.
         Core.meanStdDev(croppedLeft, meanSrcLeft, stdSrcLeft);
-        Log.d("Left meansrc", meanSrcLeft.dump());
-        //Log.d("Left meanval4", String.valueOf(meanSrcLeft.get(3,0)[0]));
-
-        //Log.d("Left meanval1", String.valueOf(meanSrcLeft.get(0,0)[0]));
-        //Log.d("Left meanval2", String.valueOf(meanSrcLeft.get(1,0)[0]));
-        //Log.d("Left meanval3", String.valueOf(meanSrcLeft.get(2,0)[0]));
 
         // Right CROPPED IMAGE
-        Mat croppedRight = new Mat(rgbaImage, roiRight);
+        Mat croppedRight = new Mat(combinedMask, roiRight);
         MatOfDouble meanSrcRight= new MatOfDouble();
         MatOfDouble stdSrcRight = new MatOfDouble();
+        // Calculate mean and standard deviation of the values in cropped right image and store them.
         Core.meanStdDev(croppedRight, meanSrcRight, stdSrcRight);
-        Log.d("Right meansrc", meanSrcRight.dump());
-        //Log.d("Right meanval4", String.valueOf(meanSrcRight.get(3,0)[0]));
 
         // Only 1 channel because rgbaImage is a mask.
         directionGradient.add(meanSrcLeft.get(0,0)[0] - meanSrcRight.get(0,0)[0]);
-
-        //Log.d("Left meanval1", String.valueOf(meanSrcLeft.get(0,0)[0]));
-        //Log.d("Left meanval2", String.valueOf(meanSrcLeft.get(1,0)[0]));
-        //Log.d("Left meanval3", String.valueOf(meanSrcLeft.get(2,0)[0]));
-
     }
 
     public Double getDirectionGradient(){
-        //return directionGradient;
+        // Get last 30 frames
         List<Double> tail = directionGradient.subList(Math.max(directionGradient.size() - 30, 0), directionGradient.size());
-        //Log.d("directionGradient", String.valueOf(tail));
 
         List<Double> diffGrad = new ArrayList<Double>();
 
         for (int i = 0; i < tail.size()-1; i++){
-            // Printing and display the elements in ArrayList
-            //System.out.print(tail.get(i) + " ");
+            // Store difference of consecutive values in tail into diffGrad
             diffGrad.add(tail.get(i) - tail.get(i+1));
         }
 
+        // Sum all the values in diffGrad and return it.
         double sumDiffGrad = 0;
         for(int i = 0; i < diffGrad.size(); i++){
             sumDiffGrad += diffGrad.get(i);
         }
-        //Log.d("SumDIFFGRAD", String.valueOf(sumDiffGrad));
         return sumDiffGrad;
     }
 }

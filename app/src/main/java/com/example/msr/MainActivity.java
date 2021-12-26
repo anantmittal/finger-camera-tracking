@@ -56,7 +56,7 @@ public class MainActivity extends CameraActivity implements CvCameraViewListener
             }
         }
     };
-    
+
     public MainActivity() {
         Log.i(TAG, "Instantiated new " + this.getClass());
     }
