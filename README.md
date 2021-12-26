@@ -1,4 +1,4 @@
-# Finger Camera Tracking
+# Finger Motion Tracking
 
 An android app which detects a finger moving left to right or right to left while touching the back camera, and prints that direction on the screen.
 
@@ -9,7 +9,7 @@ An android app which detects a finger moving left to right or right to left whil
 2. Convert frame from RGBA to HSV
 3. Apply two masks to capture red color band in the HSV frame, and do bitwise_or operation to combine them.
 4. Divide the combined mask into 2 halves, left and right. Compute difference (left half - right half) of means of pixel intensity values and store them in memory.
-5. For a sequence of frames, if the sequence of above computed difference decreases from positive to negative, the direction is left-to-right. Else it's right-to-left.
+5. For a sequence of frames, if the above computed difference moves from positive to negative, the direction is left-to-right. Else it's right-to-left.
 ```
 
 Most of the above computation happens in the following 3 methods:
